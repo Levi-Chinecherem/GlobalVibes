@@ -35,42 +35,48 @@
 
     <!-- Existing code for Yesterday's blogs -->
     {% if yesterday_blogs %}
-        <div class="mb-3">
-            <h1 class="text-3xl font-bold">Yesterday</h1>
-            <p class="text-sm text-gray-500 uppercase font-bold">{{ yesterday|date:"l j F" }}</p>
-        </div>
+        <!-- Existing code for Yesterday's blogs -->
+    <div class="mb-3">
+        <h1 class="text-3xl font-bold">Yesterday</h1>
+        <p class="text-sm text-gray-500 uppercase font-bold">{{ yesterday|date:"l j F" }}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {% for yesterday_blog in yesterday_blogs %}
-            <div class="flex -mx-1 ">
-                <div class="w-1/2 px-1">
-                    <a href="{% url 'blog_detail' blog_id=yesterday_blog.id %}" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ yesterday_blog.cover_image.url }}) center; background-size: cover;">
-                        <div class="h-24"></div>
-                        <h3 class="text-lg font-bold text-white leading-tight">{{ yesterday_blog.title }}</h3>
-                    </a>
-                </div>
-            </div>
+            <a href="{% url 'blog_detail' blog_id=yesterday_blog.id %}" class="block p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ yesterday_blog.cover_image.url }}) center; background-size: cover;">
+                <div class="h-32"></div>
+                <h3 class="text-lg font-bold text-white leading-tight">{{ yesterday_blog.title }}</h3>
+            </a>
         {% endfor %}
+    </div>
     {% else %}
         <p>No blogs available for yesterday. Check back later.</p>
     {% endif %}
 
 
+
+
     <!-- Other blogs -->
     {% if other_blogs %}
-        <div class="mb-3">
-            <h1 class="text-3xl font-bold">Others</h1>
-        </div>
-        {% for blog in other_blogs %}
-            <div class="flex -mx-1 mb-5">
-                <div class="w-1/2 px-1">
-                    <a href="{% url 'blog_detail' blog_id=blog.id %}" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ blog.cover_image.url }}) center; background-size: cover;">
-                        <div class="h-24"></div>
-                        <h3 class="text-lg font-bold text-white leading-tight">{{ blog.title }}</h3>
-                    </a>
-                    <!-- Repeat similar code for the second blog in the row -->
-                    ...
+    <div class="mb-3">
+        <h1 class="text-3xl font-bold">Previous</h1>
+    </div>
+    {% for blog in other_blogs %}
+        <div>
+            <a href="{% url 'blog_detail' blog_id=blog.id %}" class="flex w-full transform transition-all duration-300 scale-100 hover:scale-95">
+                <div class="block h-24 w-2/5 rounded overflow-hidden" style="background: url({{ blog.cover_image.url }}) center; background-size: cover;"></div>
+                <div class="pl-3 w-3/5">
+                    <p class="text-xs text-gray-500 uppercase font-semibold">{{ blog.category }}</p>
+                    <h3 class="text-md font-semibold leading-tight mb-3">{{ blog.title }}</h3>
+                    <div class="flex w-full items-center text-xs text-gray-500 font-medium">
+                        <div class="rounded-full w-5 h-5 mr-3" style="background: url(https://randomuser.me/api/portraits/men/41.jpg) center; background-size: cover;"></div>
+                        <div>{{ blog.author }}</div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            </a>
+        </div>
+        <hr class="border-gray-200 my-3">
+    {% endfor %}
+
 
         <!-- Pagination -->
         <div class="bg-gradient-to-b from-purple-200 to-pink-100 w-full flex justify-center items-center">
