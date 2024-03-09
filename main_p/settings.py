@@ -140,6 +140,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
+# Specify the URL where users should be redirected after logging in.
+LOGIN_REDIRECT_URL = '/'
+
+# Specify the URL where users should be redirected after logging out.
+LOGOUT_REDIRECT_URL = '/'
+
+# Specify the URL where users should log in.
+LOGIN_URL = '/accounts/signin/'
+
+# Specify the URL where users should be redirected if they try to access a protected resource without being logged in.
+LOGIN_URL_REDIRECT = '/accounts/signin/'
+
 # Define the root directory for static files.
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/root')
