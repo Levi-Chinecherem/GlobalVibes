@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        {% block title %}
+        {% endblock title %}
+         - Global Vibes
+    </title>
+    <meta name="description" content="Global Vibes Blog and General Blobs">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Include CKEditor scripts -->
+    <script type="text/javascript" src="{% static 'root/ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'root/ckeditor/ckeditor/ckeditor.js' %}"></script>
+    
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+        {% comment %} <script>
+            tailwind.config = {
+            theme: {
+                colors: {
+                mainRed: '#FF0000', // Main red color
+                darkBG: '#1f2937', // Darker red for hover
+                darkRed: '#CC0000', // Darker red for hover
+                lightRed: '#FF6666', // Lighter red for button background
+                white: '#FFFFFF', // White color
+                grayishBlack: '#333333', // Grayish black for text
+                lightGray: '#CCCCCC', // Light gray for borders and other elements
+                backgroundGray: '#F7F7F7', // Light gray for background
+                navLink: '#555555', // Dark gray for navigation links
+                navLinkHover: '#FF0000', // Darker gray for hover on navigation links
+                },
+            }
+            }
+        </script> {% endcomment %}
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />    {% block css %}
+    {% endblock css %}
+</head>
+<body class="relative from-gray-100 via-rose-100 to-gay-500 bg-gradient-to-br">
+
+{% include 'others/nav.html' %}
+
+{% block content %}
+{% endblock content %}
+
+{% include 'others/footer.html' %}
+
+{% block scripts %}
+{% endblock scripts %}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Add this script at the end of your template -->
+<script>
+    function updateNotifications() {
+        $.ajax({
+            url: '{% url "get_notification_count" %}',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // Update notification count
+                $('.notification-count').text(data.notification_unread_count);
+
+                // Update notification list if needed
+                // Example: Update a dropdown menu
+                var notificationsDropdown = $('#notifications-dropdown');
+                notificationsDropdown.empty();
+                data.notifications.forEach(function (notification) {
+                    notificationsDropdown.append('<a href="' + notification.link + '">' + notification.message + '</a>');
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        });
+    }
+
+    // Periodically fetch notifications (every 30 seconds in this example)
+    setInterval(updateNotifications, 30000);
+
+    // Initial fetch on page load
+    updateNotifications();
+</script>
+
+<script src="" async defer></script>
+</body>
+</html>

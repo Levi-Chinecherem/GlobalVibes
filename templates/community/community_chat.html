@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ community.title }} Chat
+{% endblock title %}
+
+{% block css %}
+    <!-- Add any additional CSS styles here -->
+    <style>
+        /* Add your custom styles here if needed */
+    </style>
+{% endblock css %}
+
+{% block content %}
+<div class="container h-screen mx-auto shadow-lg rounded-lg ">
+    <!-- Header -->
+    <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
+        <div class="font-semibold text-2xl">{{ community.title }}</div>
+        <div class="w-1/2">
+            <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search IRL"
+                class="rounded-2xl bg-gray-100 py-3 px-5"
+            />
+        </div>
+        <div class="h-12 w-12 p-2 bg-yellow-500 rounded-full text-white font-semibold flex items-center justify-center">
+            {{ user.username|first }}
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Chatting -->
+    <div class="flex flex-row justify-between bg-white h-[80%]">
+        <!-- Chat List -->
+        <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
+           
+
+            <!-- User List -->
+            {% for chat in unique_chats %}
+            <div class="flex flex-row py-4 px-2 items-center border-b-2 {% if chat.sender == user %}border-l-4 border-blue-400{% endif %}">
+                <div class="w-1/4">
+                    <img
+                        src="{{ chat.user.profile_image.url }}"
+                        class="object-cover h-5 w-5 rounded-full"
+                        alt="{{ chat.user.username }}"
+                    />
+                </div>
+                <div class="w-full">
+                    <div class="text-lg font-semibold">{{ chat.user.username }}</div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- End User List -->
+
+
+        </div>
+        <!-- End Chat List -->
+
+        <!-- Message -->
+        <div class="w-full px-5 flex flex-col justify-between">
+            <div class="flex flex-col mt-5">
+                <!-- Display Previous Messages -->
+                {% for chat in chats %}
+                    <div class="flex {% if chat.sender == user %}justify-end{% else %}justify-start{% endif %} mb-4">
+                        <img
+                            src="{{ chat.user.profile_image.url }}"
+                            class="object-cover h-8 w-8 rounded-full"
+                            alt="{{ chat.user.username }}"
+                        />
+                        <div
+                            class="{% if chat.user == user %}mr-2{% else %}ml-2{% endif %} py-3 px-4 {% if chat.user == user %}bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white{% else %}bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white{% endif %}">
+                            {{ chat.message }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <!-- End Display Previous Messages -->
+            </div>
+
+            <!-- Chat Input Form -->
+            <div class="py-5">
+                <form id="chat-form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input
+                        class="w-full bg-gray-300 py-5 px-3 rounded-xl"
+                        type="text"
+                        name="message"
+                        placeholder="Type your message here..."
+                    />
+                    <input type="file" name="media_file" accept="image/*, video/*, audio/*" />
+                    <button type="submit" class="block mt-2 bg-red-400 py-2 px-4 rounded hover:bg-red-700 text-white">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+            <!-- End Chat Input Form -->
+        </div>
+        <!-- End Message -->
+
+        <!-- Active Group Information -->
+        <div class="w-2/5 border-l-2 px-5">
+            <div class="flex flex-col">
+                <div class="font-semibold text-xl py-4">{{ community.title }}</div>
+                <img
+                    src="{{ community.cover_image.url }}"
+                    class="object-cover rounded-xl h-64"
+                    alt="{{ community.title }} Cover Image"
+                />
+                <div class="font-semibold py-4">Created {{ community.created_at|date:"d M Y" }}</div>
+                <div class="font-light">{{ community.description }}</div>
+            </div>
+        </div>
+        <!-- End Active Group Information -->
+    </div>
+    <!-- End Chatting -->
+</div>
+{% endblock content %}
+
+{% block scripts %}
+    <!-- Add any additional scripts here -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Add your custom scripts here if needed
+
+        $(document).ready(function () {
+            const chatForm = $("#chat-form");
+
+            chatForm.submit(function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(chatForm[0]);
+                const communityId = {{ community.id }};
+
+                $.ajax({
+                    type: "POST",
+                    url: `/community/${communityId}/send_chat/`,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                    },
+                    success: function (data) {
+                        if (data.status === "success") {
+                            // Handle success, e.g., update chat interface
+                            console.log(data);
+                        } else {
+                            // Handle error
+                            console.error(data.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error:", error);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock scripts %}
+
+

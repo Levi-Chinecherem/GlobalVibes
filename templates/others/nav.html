@@ -1,0 +1,178 @@
+<nav class="bg-gradient-to-b from-pink-100 to-purple-200 shadow shadow-gray-300 w-full px-4 md:px-auto">
+    
+    {% comment %} desktop nav {% endcomment %}
+    <div class="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+        <!-- Logo -->
+        <div class="text-red-500 md:order-1">
+            <!-- Heroicon - Chip Outline -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+        </div>
+        <!-- Hamburger Button -->
+        <button id="menu-toggle"
+                class="md:hidden px-2 py-1 text-red-500 hover:text-red-700 focus:outline-none">
+            <!-- Heroicons - Menu -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 9h14a1 1 0 110 2H3a1 1 0 110-2zm0-4h14a1 1 0 110 2H3a1 1 0 110-2zm0 8h14a1 1 0 110 2H3a1 1 0 110-2z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div class="text-gray-500 order-3 w-full md:w-auto md:order-2 hidden md:flex">
+            <!-- Your existing navigation links -->
+            <!-- Active Link = text-red-500
+            Inactive Link = hover:text-red-500 -->
+            <ul class="flex font-semibold justify-between">
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'home' %}">Home</a></li>
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'all_blogs' %}">Blogs</a></li>
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'contact' %}">Contact</a></li>
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'testimonials' %}">Testimonials</a></li>
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'terms' %}">Terms</a></li>
+                <li class="md:px-4 md:py-2 hover:text-red-500"><a href="{% url 'community_list' %}">Communities</a></li>
+            </ul>
+        </div>
+        <div class="hidden md:flex flex-row justify-center items-center md:block order-2 md:order-3">
+            {% if user.is_authenticated %}
+                <!-- If user is authenticated, show Logout link -->
+                <a href="{% url 'signout' %}" class="px-4 py-2 bg-red-500 hover:bg-gray-600 text-gray-50 rounded-xl flex items-center gap-2">
+                    <!-- Heroicons - Logout Solid -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M13 2a1 1 0 011 1v14a1 1 0 01-2 0V3a1 1 0 011-1zm-5 3a1 1 0 011 1v8a1 1 0 01-2 0V6a1 1 0 011-1zm9.293 9.293a1 1 0 010 1.414L15.414 19H18a1 1 0 010 2H2a1 1 0 010-2h2.586l-2.293-2.293a1 1 0 011.414-1.414L8 17.586l6.293-6.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Logout</span>
+                </a>
+            {% else %}
+                <!-- If user is not authenticated, show Login link -->
+                <a href="{% url 'signin' %}" class="px-4 py-2 bg-red-500 hover:bg-gray-600 text-gray-50 rounded-xl flex items-center gap-2">
+                    <!-- Heroicons - Login Solid -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Login</span>
+                </a>
+            {% endif %}
+        
+            <!-- Notification Icon with Count -->
+            <div class="relative group">
+                <span class="cursor-pointer px-4 py-2 hover:text-red-500" id="notification-icon">
+                    <!-- Font Awesome 4 - Bell Icon -->
+                    <i class="fa fa-bell fa-lg text-gray-700"></i>
+                    {% with unread_notifications=unread_notifications %}
+                        {% if unread_notifications %}
+                            <!-- Notification Count Badge -->
+                            <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1">
+                                {{ unread_notifications|length }}
+                            </span>
+                        {% endif %}
+                    {% endwith %}
+                </span>
+        
+                <!-- Dropdown for Notifications -->
+                <div class="hidden z-10 group-hover:block absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div class="p-2">
+                        <h3 class="text-lg font-semibold mb-2">Notifications</h3>
+                        {% if unread_notifications %}
+                            <ul>
+                                {% for notification in unread_notifications %}
+                                    <li class="mb-2">
+                                        <a href="{{ notification.link }}" class="hover:text-red-500">{{ notification.action }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-gray-500">No new notifications.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</nav>
+
+{% comment %} mobile nav  {% endcomment %}
+<div id="nav-card" class="text-gray-500 hidden fixed top-[38%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md shadow-md z-50 w-full">
+    <div class="flex flex-col sm:flex-row justify-center md:items-start">
+        <!-- Left Column - Links and Buttons -->
+        <div class="w-full sm:w-[50%] sm:ml-4">
+            <ul>
+                <li class="mb-2"><a href="{% url 'home' %}" class="block hover:text-red-700">Home</a></li>
+                <li class="mb-2"><a href="{% url 'all_blogs' %}" class="block hover:text-red-700">Blogs</a></li>
+                <li class="mb-2"><a href="{% url 'contact' %}" class="block hover:text-red-700">Contact</a></li>
+                <li class="mb-2"><a href="{% url 'testimonials' %}" class="block hover:text-red-700">Testimonials</a></li>
+                <li class="mb-2"><a href="{% url 'terms' %}" class="block hover:text-red-700">Terms</a></li>
+                <li class="mb-2"><a href="{% url 'community_list' %}" class="block hover:text-red-700">Communities</a></li>
+            </ul>
+            {% if user.is_authenticated %}
+                <!-- If user is authenticated, show Logout link -->
+                <a href="{% url 'signout' %}" class="mt-4 px-4 py-2 bg-red-500 hover:bg-gray-600 text-gray-50 rounded-xl flex items-center gap-2 w-full md:w-[50%]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M13 2a1 1 0 011 1v14a1 1 0 01-2 0V3a1 1 0 011-1zm-5 3a1 1 0 011 1v8a1 1 0 01-2 0V6a1 1 0 011-1zm9.293 9.293a1 1 0 010 1.414L15.414 19H18a1 1 0 010 2H2a1 1 0 010-2h2.586l-2.293-2.293a1 1 0 011.414-1.414L8 17.586l6.293-6.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Logout</span>
+                </a>
+            {% else %}
+                <!-- If user is not authenticated, show Login link -->
+                <a href="{% url 'signin' %}" class="mt-4 px-4 py-2 bg-red-500 hover:bg-gray-600 text-gray-50 rounded-xl flex items-center gap-2 w-full md:w-[50%]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Login</span>
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Right Column - Notification Icon and Dropdown -->
+        <div class="w-full sm:w-[50%] mt-4 sm:mt-0">
+            <!-- Notification Icon with Count -->
+            <div class="relative group">
+                <span class="cursor-pointer py-2 hover:text-red-500" id="notification-icon">
+                    <!-- Font Awesome 4 - Bell Icon -->
+                    <i class="fa fa-bell fa-lg text-gray-700"></i> Notifications
+                    {% with unread_notifications=unread_notifications %}
+                        {% if unread_notifications %}
+                            <!-- Notification Count Badge -->
+                            <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1">
+                                {{ unread_notifications|length }}
+                            </span>
+                        {% endif %}
+                    {% endwith %}
+                </span>
+
+                <!-- Dropdown for Notifications -->
+                <div class="hidden z-10 group-hover:block absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-md shadow-md">
+                    <div class="p-2">
+                        <h3 class="text-lg font-semibold mb-2">Notifications</h3>
+                        {% if unread_notifications %}
+                            <ul>
+                                {% for notification in unread_notifications %}
+                                    <li class="mb-2">
+                                        <a href="{{ notification.link }}" class="hover:text-red-500">{{ notification.action }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-gray-500">No new notifications.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function () {
+        var navCard = document.getElementById('nav-card');
+        navCard.classList.toggle('hidden');
+    });
+</script>

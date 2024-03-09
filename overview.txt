@@ -1,0 +1,89 @@
+General idea of globalVibes blogging system:
+we are going to build a complex blogging system, part by part until its complete
+we will use django, tailwind css, jquery ajax to prevent page reload before data are updated, their will be paginations, filtering and searching of blogs etc
+so you will help me as we craft this system from ground up, below are the features of this system, we will build it app after app, lets begin with the accounts app
+
+
+Inside the accounts app
+CustomUser model:
+allow user upload their profile image, promoter(which remains false until admin adds the user to the promoters list in the promoters app, then it updates to true automatically)
+also make user login with email instead of username, and username, along side their password too etc
+
+add cutomManager too
+
+
+Inside notification app
+
+add a notification system, push notification, such that actions from any app within the system can send their notifications and they will all be in one notification model, for easy access, include the notification count, red (true or false depending if user have viewed or red it)
+always add link to the notification, to allow user to go view them, like if its a comment on any blog, add link to that blog so that user can easily access it.
+
+
+Inside blog app
+
+Category model:
+title
+
+Tags model:
+title
+
+
+Blog model:
+title
+category (relate to category model)
+cover_image
+content
+created_at
+author (relation to user)
+tags (relation to tags model, allow one blog to relate to many tags)
+
+
+Comment model:
+source (relate to user dropping the comment)
+blog (relate to blog recieving the comment, that is the blog that the user is dropping the comment on)
+commentary
+created_at
+
+Like model:
+source (relate to user dropping the comment)
+blog (relate to blog recieving the comment, that is the blog that the user is dropping the comment on)
+like (true or false)
+created_at
+
+
+add verbose singular and plural names to all the models and __str__ method too
+
+More:
+i'll like a situation whereby users can also reply to follow users comments, by typing @ then the users name, to target that particular user, i'll like to have a share button button too when clicked should copy the blog url to clipboard and return a flash message saying copied, that is on the template side
+
+push a notification, to notify all users through notification app about a new blog, and comments on a any blog, and especially when the @username is used notify that particular user about the comment and the blog
+
+again the filtering ill like for the blogs are:
+today's posts
+yesterday's post
+by category
+by tags
+by date range, that is from so date to so date, return all blogs that existss within those days (created_at)
+then search by any blog model fields
+
+
+Inside promoters app
+promoters model:
+name (relation to the user being promoted)
+
+anyone in the promoters list can create a blog, create communities and manage blog and communities, and anyone made a promoter should have that label on them, that is update their customUser model to make promoter true
+
+
+Inside community app:
+
+
+community model:
+title
+cover_image
+etc
+
+ill like to have a chatting system in the community to allow admin or anyone promoted to the level of promoter to be able to create communities, delete communities, update etc. they can also approve users request to join any community, and then the general users can join each community and chat in the community they have joined, remember to add notification system for this too, 
+
+
+
+
+

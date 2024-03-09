@@ -1,0 +1,103 @@
+<!-- component -->
+<div class="bg-gray-200 h-full w-full px-10 pt-6 pb-20 overflow-y-auto">
+    
+    <!-- Existing code for Today's blogs -->
+    {% if today_blogs %}
+        <div class="mb-3">
+            <h1 class="text-3xl font-bold">Today</h1>
+            <p class="text-sm text-gray-500 uppercase font-bold">{{ today|date:"l j F" }}</p>
+        </div>
+        {% for today_blog in today_blogs %}
+            <div class="mb-5">
+                <a href="{% url 'blog_detail' blog_id=today_blog.id %}" class="block rounded-lg relative p-5 transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ today_blog.cover_image.url }}) center; background-size: cover;">
+                    <div class="absolute top-0 right-0 -mt-3 mr-3">
+                        <div class="rounded-full bg-red-500 text-white text-xs py-1 pl-2 pr-3 leading-none"><i class="mdi mdi-fire text-base align-middle"></i> <span class="align-middle">FRESH</span></div>
+                    </div>
+                    <div class="h-48"></div>
+                    <h2 class="text-white text-2xl font-bold leading-tight mb-3 pr-5">{{ today_blog.title }}</h2>
+                    <div class="flex w-full items-center text-sm text-gray-300 font-medium">
+                        <div class="flex-1 flex items-center">
+                            {% if today_blog.author.profile_image %}
+                                <div class="rounded-full w-8 h-8 mr-3" style="background: url({{ today_blog.author.profile_image.url }}) center; background-size: cover;"></div>
+                            {% else %}
+                                <div class="rounded-full w-8 h-8 mr-3" style="background: url(https://randomuser.me/api/portraits/women/74.jpg) center; background-size: cover;"></div>
+                            {% endif %}
+                            <div>{{ today_blog.author.username }}</div>
+                        </div>
+                        <div><i class="mdi mdi-thumb-up"></i> {{ today_blog.likes.count }}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No blogs available for today. Check back later.</p>
+    {% endif %}
+
+    <!-- Existing code for Yesterday's blogs -->
+    {% if yesterday_blogs %}
+        <div class="mb-3">
+            <h1 class="text-3xl font-bold">Yesterday</h1>
+            <p class="text-sm text-gray-500 uppercase font-bold">{{ yesterday|date:"l j F" }}</p>
+        </div>
+        {% for yesterday_blog in yesterday_blogs %}
+            <div class="flex -mx-1 ">
+                <div class="w-1/2 px-1">
+                    <a href="{% url 'blog_detail' blog_id=yesterday_blog.id %}" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ yesterday_blog.cover_image.url }}) center; background-size: cover;">
+                        <div class="h-24"></div>
+                        <h3 class="text-lg font-bold text-white leading-tight">{{ yesterday_blog.title }}</h3>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No blogs available for yesterday. Check back later.</p>
+    {% endif %}
+
+
+    <!-- Other blogs -->
+    {% if other_blogs %}
+        <div class="mb-3">
+            <h1 class="text-3xl font-bold">Others</h1>
+        </div>
+        {% for blog in other_blogs %}
+            <div class="flex -mx-1 mb-5">
+                <div class="w-1/2 px-1">
+                    <a href="{% url 'blog_detail' blog_id=blog.id %}" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background: url({{ blog.cover_image.url }}) center; background-size: cover;">
+                        <div class="h-24"></div>
+                        <h3 class="text-lg font-bold text-white leading-tight">{{ blog.title }}</h3>
+                    </a>
+                    <!-- Repeat similar code for the second blog in the row -->
+                    ...
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <div class="bg-gradient-to-b from-purple-200 to-pink-100 w-full flex justify-center items-center">
+            <nav aria-label="Pagination" class="inline-flex -space-x-px rounded-md shadow-sm dark:bg-gray-800 dark:text-gray-100">
+                {% if other_blogs.has_previous %}
+                    <a href="?page=1" class="inline-flex items-center px-2 py-2 text-sm font-semibold border rounded-l-md dark:border-gray-700">
+                        <span class="sr-only">First</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010-1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                {% endif %}
+                {% for num in other_blogs.paginator.page_range %}
+                <a href="?page={{ num }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold border {% if other_blogs.number == num %} dark:bg-violet-400 dark:text-gray-900 dark:border-gray-700 {% endif %}">{{ num }}</a>
+
+                {% endfor %}
+                {% if other_blogs.has_next %}
+                    <a href="?page={{ other_blogs.paginator.num_pages }}" class="inline-flex items-center px-2 py-2 text-sm font-semibold border rounded-r-md dark:border-gray-700">
+                        <span class="sr-only">Last</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="w-5 h-5">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+    {% else %}
+        <p>No blogs available in this category. Check back later or explore other categories.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,81 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+    Blogs Details
+{% endblock title %}
+    
+
+{% block css %}
+    
+{% endblock css %}
+    
+
+
+{% block content %}
+
+{% include 'chunks/details.html' %}
+
+{% include 'chunks/comments.html' %}
+
+{% endblock content %}
+    
+
+
+{% block scripts %}
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Like and Share buttons JavaScript -->
+    <script>
+        document.getElementById('likeBtn').addEventListener('click', function () {
+            // Add your logic to handle the like button click
+            // You may need to make an AJAX request to update the like count
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', function () {
+            // Copy blog URL to clipboard
+            const blogUrl = window.location.href;
+            navigator.clipboard.writeText(blogUrl).then(function () {
+                // Show flash message or any other indication
+                alert('Blog URL copied for sharing!');
+            });
+        });
+
+
+        $(document).ready(function () {
+            // Attach a click event to the like button
+            $('#likeBtn').on('click', function () {
+                var blogId = $(this).data('blog-id');
+                likeBlog(blogId);
+            });
+    
+            function likeBlog(blogId) {
+                // Make an AJAX call to submit the like
+                $.ajax({
+                    type: 'POST',
+                    url: '/blog/like/',  // Replace with your URL for handling likes
+                    data: {
+                        'blog_id': blogId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        // Update the like count on success
+                        var likeCountElement = $('#likeCount');
+                        if (likeCountElement.length) {
+                            likeCountElement.text(response.like_count);
+                        }
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }
+        });
+    
+    </script>
+{% endblock scripts %}
+    

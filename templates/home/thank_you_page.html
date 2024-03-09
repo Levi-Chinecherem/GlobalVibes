@@ -1,0 +1,15 @@
+<!-- templates/home/thank_you_page.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex p-10 items-center justify-center h-screen">
+        <div class="bg-red-500 rounded-lg p-8 shadow-md w-full md:w-1/2 lg:w-1/3 text-center">
+            <h1 class="text-3xl font-bold mb-4 text-white">Thank You!</h1>
+            <p class="text-lg text-gray-100">Your message has been received. <br >We'll get back to you as soon as possible.</p>
+            
+            <!-- Button to go back to the home URL -->
+            <a href="{% url 'home' %}" class="mt-6 inline-block bg-gray-200 hover:bg-gray-500 hover:text-gray-100 text-light-red-500 hover:bg-light-red-600 px-4 py-2 rounded-full transition duration-300">Go Back Home</a>
+        </div>
+    </div>
+{% endblock %}
