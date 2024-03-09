@@ -62,7 +62,7 @@ Welcome to the GlobalVibes Blogging System, a feature-rich and dynamic blogging 
 
 1. **Installation:**
 
-   - Clone the repository: `git clone <repository-url>`
+   - Clone the repository: `git clone <https://github.com/Levi-Chinecherem/GlobalVibes.git>`
    - Install dependencies: `pip install -r requirements.txt`
 2. **Database Setup:**
 
