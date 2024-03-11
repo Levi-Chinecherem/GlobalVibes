@@ -13,7 +13,7 @@
 {% endblock css %}
 
 {% block content %}
-<div class="container min-h-screen mx-auto shadow-lg rounded-lg p-3">
+<div class="container min-h-screen mx-auto shadow-lg rounded-lg">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row px-5 py-5 md:justify-between md:items-center bg-white border-b-2">
         <div class="flex items-center">
@@ -64,7 +64,7 @@
 
         <!-- Message -->
         <div class="w-full sm:w-3/5 px-5 flex flex-col justify-between">
-            <div class="flex flex-col mt-5 overflow-y-auto h-1/2">
+            <div class="flex flex-col mt-5 overflow-y-auto h-[70%]">
                 <!-- Display Previous Messages -->
                 {% for chat in chats %}
                     <div class="flex {% if chat.sender == user %}justify-end{% else %}justify-start{% endif %} mb-4">
@@ -127,17 +127,35 @@
     <!-- Add any additional scripts here -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        // Add your custom scripts here if needed
-
         $(document).ready(function () {
             const chatForm = $("#chat-form");
+            const chatMessagesContainer = $("#chat-messages");
+            const communityId = {{ community.id }};
+    
+            function updateChats() {
+                $.ajax({
+                    type: "GET",
+                    url: `/community/${communityId}/chat/`,
+                    dataType: "json",  // Expect JSON data
+                    success: function (data) {
+                        // Update the chat interface with new data
+                        chatMessagesContainer.empty();  // Clear existing messages
+                        for (const chat of data.chats) {
+                            // Append the new message directly to the chat container
+                            chatMessagesContainer.append(`<div>${chat.user}: ${chat.message}</div>`);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error:", error);
+                    },
+                });
+            }
 
             chatForm.submit(function (e) {
                 e.preventDefault();
-
+    
                 const formData = new FormData(chatForm[0]);
-                const communityId = {{ community.id }};
-
+    
                 $.ajax({
                     type: "POST",
                     url: `/community/${communityId}/send_chat/`,
@@ -149,8 +167,11 @@
                     },
                     success: function (data) {
                         if (data.status === "success") {
-                            // Handle success, e.g., update chat interface
-                            console.log(data);
+                            // Handle success, e.g., clear message input
+                            $("#chat-form input[name='message']").val('');
+    
+                            // Update the chat messages after a delay of 1.5 seconds
+                            setTimeout(updateChats, 1500);
                         } else {
                             // Handle error
                             console.error(data.message);
@@ -160,7 +181,10 @@
                         console.error("Error:", error);
                     },
                 });
+                // Call updateChats initially or as needed
+                updateChats();
             });
+    
         });
     </script>
 {% endblock scripts %}

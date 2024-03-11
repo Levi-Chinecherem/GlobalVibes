@@ -24,6 +24,11 @@ def community_chat(request, community_id):
             unique_users.add(chat.user)
             unique_chats.append(chat)
 
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        # Return JSON response for AJAX requests
+        chat_data = [{'user': chat.user.username, 'message': chat.message} for chat in chats]
+        return JsonResponse({'chats': chat_data})
+
     return render(request, 'community/community_chat.html', {'community': community, 'unique_chats': unique_chats, 'chats': chats})
 
 @csrf_exempt
