@@ -79,7 +79,8 @@ Inside community app:
 community model:
 title
 cover_image
-etc
+description
+
 
 ill like to have a chatting system in the community to allow admin or anyone promoted to the level of promoter to be able to create communities, delete communities, update etc. they can also approve users request to join any community, and then the general users can join each community and chat in the community they have joined, remember to add notification system for this too, 
 

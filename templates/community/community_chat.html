@@ -13,65 +13,70 @@
 {% endblock css %}
 
 {% block content %}
-<div class="container h-screen mx-auto shadow-lg rounded-lg ">
+<div class="container h-screen mx-auto shadow-lg rounded-lg">
     <!-- Header -->
-    <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
-        <div class="font-semibold text-2xl">{{ community.title }}</div>
-        <div class="w-1/2">
-            <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Search IRL"
-                class="rounded-2xl bg-gray-100 py-3 px-5"
-            />
+    <div class="flex flex-col sm:flex-row px-5 py-5 md:justify-between md:items-center bg-white border-b-2">
+        <div class="flex items-center">
+            <div class="font-semibold text-lg">{{ community.title }}</div>
+
+            <!-- Hide search input on small screens -->
+            <div class="hidden sm:block ml-4">
+                <input
+                    type="text"
+                    name=""
+                    id=""
+                    placeholder="Search IRL"
+                    class="rounded-2xl bg-gray-100 py-3 px-5"
+                />
+            </div>
         </div>
-        <div class="h-12 w-12 p-2 bg-yellow-500 rounded-full text-white font-semibold flex items-center justify-center">
+
+        <div class="hidden sm:flex h-8 w-8 p-2 bg-gray-500 rounded-full text-white font-semibold justify-center items-center">
             {{ user.username|first }}
         </div>
     </div>
     <!-- End Header -->
 
-    <!-- Chatting -->
-    <div class="flex flex-row justify-between bg-white h-[80%]">
-        <!-- Chat List -->
-        <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
-           
 
+
+    <!-- Chatting -->
+    <div class="flex flex-col sm:flex-row bg-white min-h-[80%]">
+        <!-- Chat List -->
+        <div class="flex flex-col w-full sm:w-2/5 border-r-2 sm:overflow-y-auto">
             <!-- User List -->
             {% for chat in unique_chats %}
-            <div class="flex flex-row py-4 px-2 items-center border-b-2 {% if chat.sender == user %}border-l-4 border-blue-400{% endif %}">
-                <div class="w-1/4">
-                    <img
-                        src="{{ chat.user.profile_image.url }}"
-                        class="object-cover h-5 w-5 rounded-full"
-                        alt="{{ chat.user.username }}"
-                    />
+                <div class="flex flex-row py-4 px-2 items-center border-b-2 {% if chat.sender == user %}border-l-4 border-blue-400{% endif %}">
+                    <div class="w-1/4">
+                        <img
+                            src="{{ chat.user.profile_image.url }}"
+                            class="object-cover h-5 w-5 rounded-full"
+                            alt="{{ chat.user.username }}"
+                        />
+                    </div>
+                    <div class="w-full">
+                        <div class="text-sm font-semibold">{{ chat.user.username }}</div>
+                    </div>
                 </div>
-                <div class="w-full">
-                    <div class="text-lg font-semibold">{{ chat.user.username }}</div>
-                </div>
-            </div>
             {% endfor %}
             <!-- End User List -->
-
-
         </div>
         <!-- End Chat List -->
 
         <!-- Message -->
-        <div class="w-full px-5 flex flex-col justify-between">
-            <div class="flex flex-col mt-5">
+        <div class="w-full sm:w-3/5 px-5 flex flex-col justify-between">
+            <div class="flex flex-col mt-5 overflow-y-auto h-1/2">
                 <!-- Display Previous Messages -->
                 {% for chat in chats %}
                     <div class="flex {% if chat.sender == user %}justify-end{% else %}justify-start{% endif %} mb-4">
+                        <div class="flex flex-col items-center justify-center">
                         <img
                             src="{{ chat.user.profile_image.url }}"
                             class="object-cover h-8 w-8 rounded-full"
                             alt="{{ chat.user.username }}"
-                        />
+                        /><div class="text-[10px]">{{ chat.user.username }}</div>
+                        </div>
                         <div
-                            class="{% if chat.user == user %}mr-2{% else %}ml-2{% endif %} py-3 px-4 {% if chat.user == user %}bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white{% else %}bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white{% endif %}">
+                            class="text-sm {% if chat.user == user %}mr-2{% else %}ml-2{% endif %} py-3 px-4 {% if chat.user == user %}bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white{% else %}bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white{% endif %}">
                             {{ chat.message }}
                         </div>
                     </div>
@@ -100,12 +105,12 @@
         <!-- End Message -->
 
         <!-- Active Group Information -->
-        <div class="w-2/5 border-l-2 px-5">
+        <div class="w-full sm:w-1/2 border-l-2 px-5">
             <div class="flex flex-col">
-                <div class="font-semibold text-xl py-4">{{ community.title }}</div>
+                <div class="font-semibold text-sm py-4">{{ community.title }}</div>
                 <img
                     src="{{ community.cover_image.url }}"
-                    class="object-cover rounded-xl h-64"
+                    class="object-cover rounded-xl h-25 w-24"
                     alt="{{ community.title }} Cover Image"
                 />
                 <div class="font-semibold py-4">Created {{ community.created_at|date:"d M Y" }}</div>
@@ -159,5 +164,3 @@
         });
     </script>
 {% endblock scripts %}
-
-
