@@ -8,6 +8,7 @@ django-cloudinary-storage==0.3.0
 django-js-asset==2.2.0
 gunicorn==21.2.0
 idna==3.6
+mysqlclient==2.2.4
 packaging==23.2
 pillow==10.2.0
 requests==2.31.0

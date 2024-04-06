@@ -46,6 +46,13 @@ def terms(request):
     # Your existing code for rendering the terms page
     return render(request, 'home/terms.html', {'unread_count': unread_count})
 
+def privacy(request):
+    # Add the following line to get the unread notifications count
+    unread_count = get_unread_notifications_count(request.user) if request.user.is_authenticated else 0
+
+    # Your existing code for rendering the terms page
+    return render(request, 'home/privacy.html', {'unread_count': unread_count})
+
 def logo(request):
     # Add the following line to get the unread notifications count
     unread_count = get_unread_notifications_count(request.user) if request.user.is_authenticated else 0

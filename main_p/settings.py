@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+a#%cakq5b(pvsn2t$z%o1xhrms**+2i*3t_m-ca$av&&2+ap3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -96,10 +96,10 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'livesmis_db',
-#         'USER': 'livesmis_user',
-#         'PASSWORD': 'Live@#123456789',
-#         'HOST': 'localhost',
+#         'NAME': 'michaelMba$db_globalvibes',
+#         'USER': 'michaelMba',
+#         'PASSWORD': 'Wallace4736!',
+#         'HOST': 'michaelMba.mysql.pythonanywhere-services.com',
 #         'PORT': '3306',
 #     }}
 
@@ -162,14 +162,14 @@ STATICFILES_DIRS = [
 ]
 
 # Define the root directory for media files.
-MEDIA_URL = '/global_vibes_media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'ddirw9v0d',
-    'API_KEY': '736136276635934',
-    'API_SECRET': '8ePybnqjE4xP9HlGMhT_jyUiiTI'
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'ddirw9v0d',
+#     'API_KEY': '736136276635934',
+#     'API_SECRET': '8ePybnqjE4xP9HlGMhT_jyUiiTI'
+# }
 
 CKEDITOR_BASEPATH = "/static/root/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'uploads/'  
